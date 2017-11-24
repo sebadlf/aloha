@@ -1,12 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
 
 import Home from './containers/home';
 
-const App = ({ children }) => (
+const App = ({ route }) => (
   <div>
-    <span>Alojarte Aqui!!!</span>
-    {children}
+    <span>Alojarte Aqui!!</span>
+    {renderRoutes(route.routes)}
   </div>
 );
 
@@ -22,38 +22,25 @@ const NoMatch = () => (
   </div>
 );
 
-// import {
-//     App,
-//     NotFound,
-//     DevTools,
-//     Home
-//   } from 'containers';
 
-export default () =>
-  /**
-   * Please keep routes in alphabetical order
-   */
-  (
-    <Router>
-      <App>
-        { /* Home (main) route */ }
-        <Switch>
+const routes = [
+  {
+    component: App,
+    routes: [
+      {
+        path: '/',
+        exact: true,
+        component: Home,
+      },
+      {
+        path: '/devtools',
+        component: DevTools,
+      },
+      {
+        component: NoMatch,
+      },
+    ],
+  },
+];
 
-          { /* Routes requiring login */ }
-          { /* <Route onEnter={requireLogin}>
-            <Route path="chat" component={Chat}/>
-            <Route path="loginSuccess" component={LoginSuccess}/>
-        </Route> */ }
-
-          { /* Routes */ }
-
-          <Route exact path="/" component={Home} />
-          <Route path="devtools" component={DevTools} />
-
-          { /* Catch all route */ }
-          <Route component={NoMatch} />
-        </Switch>
-      </App>
-    </Router>
-  );
-
+export default routes;

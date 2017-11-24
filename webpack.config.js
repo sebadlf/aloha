@@ -1,21 +1,21 @@
-var webpack = require('webpack')
-var path = require('path')
-var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+const webpack = require('webpack');
+const path = require('path');
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production';
 
-process.traceDeprecation = true
+process.traceDeprecation = true;
 
 const prodPlugins = [
   new webpack.LoaderOptionsPlugin({
     minimize: true,
-    debug: false
+    debug: false,
   }),
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify('production')
-    }
+      NODE_ENV: JSON.stringify('production'),
+    },
   }),
   new webpack.optimize.UglifyJsPlugin({
     sourceMap: true,
@@ -25,54 +25,52 @@ const prodPlugins = [
       pure_getters: true,
       unsafe: true,
       unsafe_comps: true,
-      screw_ie8: true
+      screw_ie8: true,
     },
     output: {
-      comments: false
+      comments: false,
     },
-    exclude: [/\.min\.js$/gi] // skip pre-minified libs
+    exclude: [/\.min\.js$/gi], // skip pre-minified libs
   }),
   new CommonsChunkPlugin({
     filename: 'commons.js',
-    name: 'commons'
+    name: 'commons',
   }),
-  new ExtractTextPlugin(
-    '../stylesheets/[name]-build.css'
-  )
-]
+  new ExtractTextPlugin('../stylesheets/[name]-build.css'),
+];
 
 const devPlugins = [
-  new webpack.HotModuleReplacementPlugin()
-]
+  new webpack.HotModuleReplacementPlugin(),
+];
 
 const prodStylesScssConf = ExtractTextPlugin.extract({
   fallback: 'style-loader',
-  use: 'css-loader?url=false&sourceMap!postcss-loader?sourceMap!sass-loader?sourceMap'
-})
+  use: 'css-loader?url=false&sourceMap!postcss-loader?sourceMap!sass-loader?sourceMap',
+});
 
-const devStylesScssConf = 'style-loader!css-loader?sourceMap!postcss-loader?sourceMap!sass-loader?sourceMap'
+const devStylesScssConf = 'style-loader!css-loader?sourceMap!postcss-loader?sourceMap!sass-loader?sourceMap';
 
 const prodStylesCssConf = ExtractTextPlugin.extract({
   fallback: 'style-loader',
-  use: 'css-loader?url=false&sourceMap!postcss-loader?sourceMap'
-})
+  use: 'css-loader?url=false&sourceMap!postcss-loader?sourceMap',
+});
 
-const devStylesCssConf = 'style-loader!css?sourceMap!postcss-loader?sourceMap'
+const devStylesCssConf = 'style-loader!css?sourceMap!postcss-loader?sourceMap';
 
-const hotReloadEndpoints = ['webpack/hot/only-dev-server', 'webpack-dev-server/client?http://localhost:4000']
+const hotReloadEndpoints = ['webpack/hot/only-dev-server', 'webpack-dev-server/client?http://localhost:4000'];
 
-const clientEntry = ['./src/client.js']
+const clientEntry = ['./src/client.js'];
 
 module.exports = {
   devtool: isProduction ? 'source-map' : 'eval-source-map',
   entry: {
-    client: isProduction ? clientEntry : hotReloadEndpoints.concat(clientEntry)
+    client: isProduction ? clientEntry : hotReloadEndpoints.concat(clientEntry),
   },
   output: {
     path: path.join(__dirname, 'public/build/javascripts'),
     publicPath: '/build/javascripts/',
     filename: '[name].js',
-    chunkFilename: '[id].chunk.js'
+    chunkFilename: '[id].chunk.js',
   },
   module: {
     rules: [{
@@ -80,15 +78,15 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node_modules/,
       options: {
-        presets: [["env", { "modules": false }], 'react']
-      }
+        presets: ['env', 'react'],
+      },
     }, {
       test: /\.scss$/,
-      loader: isProduction ? prodStylesScssConf : devStylesScssConf
+      loader: isProduction ? prodStylesScssConf : devStylesScssConf,
     }, {
       test: /\.css$/,
-      loader: isProduction ? prodStylesCssConf : devStylesCssConf
-    }]
+      loader: isProduction ? prodStylesCssConf : devStylesCssConf,
+    }],
   },
-  plugins: isProduction ? prodPlugins : devPlugins
-}
+  plugins: isProduction ? prodPlugins : devPlugins,
+};
