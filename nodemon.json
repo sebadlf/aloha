@@ -1,4 +1,4 @@
 {
     "verbose": true,
-    "ignore": ["src/**/*.js"]
+    "ignore": ["src/*.js", "src/**/*.js"]
 }
