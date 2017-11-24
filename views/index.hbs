@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Alojate Aqui!</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">    
+  <meta name="description" content="">    
+  <meta name="viewport" content="width=device-width, initial-scale=1">   
+</head>
+<body>
+  <div id="root"></div>
+
+  {{#if isProduction}} 
+    <script src='/build/javascripts/commons.js'></script>
+  {{/if}}
+  <script src='/build/javascripts/client.js'></script>
+    
+  {{#if isProduction}}  
+    <link rel="stylesheet" href="/build/stylesheets/client-build.css"></link>
+  {{/if}}
+</body>
+</html>
