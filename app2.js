@@ -63,12 +63,12 @@ app.use('*', (req, res) => {
   const context = {};
   const content = renderToString(<StaticRouter location={req.url} context={context}>
     {renderRoutes(routes)}
-                                 </StaticRouter>);
+  </StaticRouter>);
 
   console.log(content);
 
-  res.send(content);
-  // res.render('index', { title: 'Express', data: false, content });
+  // res.send(content);
+  res.render('index', { title: 'Express', data: false, content });
 });
 
 // app.use('/', index);
