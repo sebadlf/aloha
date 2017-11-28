@@ -12,5 +12,5 @@ try {
 
 require('babel-register')(config);
 
-module.exports = require('./app2');
+module.exports = require('./src/server');
 

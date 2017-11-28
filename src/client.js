@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
@@ -17,7 +17,8 @@ import rootReducer from './reducers';
 
 const store = createStore(
   rootReducer,
-  {},
+  // JSON.parse(window.__INITIAL_STATE__),
+  window.__INITIAL_STATE__,
   compose(
     applyMiddleware(ReduxThunk, promiseMiddleware()),
     window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
@@ -35,7 +36,7 @@ const store = createStore(
 //   })
 // }
 
-render(
+hydrate(
   <Provider store={store}>
     <BrowserRouter>
       {renderRoutes(routes)}

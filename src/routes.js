@@ -2,6 +2,7 @@ import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
 import Home from './containers/home';
+import NotFound from './containers/notFound';
 
 const App = ({ route }) => (
   <div>
@@ -15,13 +16,6 @@ const DevTools = () => (
     <span>DevTools</span>
   </div>
 );
-
-const NoMatch = () => (
-  <div>
-    <span>NoMatch</span>
-  </div>
-);
-
 
 const routes = [
   {
@@ -37,7 +31,7 @@ const routes = [
         component: DevTools,
       },
       {
-        component: NoMatch,
+        component: NotFound,
       },
     ],
   },
