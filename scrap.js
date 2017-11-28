@@ -1,7 +1,7 @@
 const $ = require('cheerio');
 const axios = require('axios');
 
-const homeUrl = 'https://www.cabanias.com.ar/';
+const homeUrl = 'https://www.cabanias.com.ar';
 
 
 async function getData(url) {
@@ -12,6 +12,7 @@ async function getData(url) {
     result = response.data;
   } catch (ex) {
     result = ex;
+    console.log(ex);
   }
 
   return result;
@@ -21,66 +22,64 @@ async function main() {
   const homePage = await getData(homeUrl);
   const links = $('li.subregiones-flechita a', homePage);
 
-  const pages = [];
+  let locations = [];
   links.each((i, link) => {
     // console.log($(link).html());
-    pages.push($(link).attr('href'));
-  });
-
-  links.each(async (i, elem) => {
-    const pagina = $(elem).attr('href');
-    console.log('--------', pagina);
-
-    const cityPage = await getData(homeUrl + pagina);
-    const cityPageLinks = $('.listado-todos .layout-33 ul li div a', cityPage);
-
-    cityPageLinks.each(async (j, cityPageLink) => {
-      console.log($(cityPageLink).attr('href'));
+    locations.push({
+      name: $(link).text(),
+      url: homeUrl + $(link).attr('href'),
+      units: [],
     });
   });
-  // const ciudades = links.map((i, link) => $(link).html());
 
-  // console.log($(ciudades));
+  locations = await Promise.all(locations.map(async (location) => {
+    const cityPage = await getData(location.url);
+    const cityPageLocations = $('.listado-todos .layout-33 ul li div:not(.clearfix)', cityPage);
 
-  // links.each(async (i, elem) => {
-  //   const pagina = $(elem).attr('href');
-  //   console.log('--------', pagina);
+    cityPageLocations.each(async (j, cityPageLocation) => {
+      const link = $(cityPageLocation).find('a.nombre-complejo-trigger');
+      const name = link.text();
+      const url = homeUrl + link.attr('href');
+      const locationName = $(cityPageLocation).find('span').text();
 
-  //   const cityPage = await getData(homeUrl + pagina);
-  //   const cityPageLinks = $('.listado-todos .layout-33 ul li div a', cityPage);
+      console.log(name);
 
-  //   cityPageLinks.each(async (j, cityPageLink) => {
-  //     console.log($(cityPageLink).attr('href'));
-  //   });
-  // });
+      const locationPage = await getData(url);
+      const locationPageImgs = $('a.foto-complejo', locationPage);
+      const locationPageData = $('.info-ficha div.layout-75 section', locationPage);
+
+      const imgs = [];
+      locationPageImgs.each((k, locationPageImg) => {
+        imgs.push(homeUrl + $(locationPageImg).attr('href'));
+      });
+
+      const data = {};
+      locationPageData.each((k, locationPageKey) => {
+        const elem = $(locationPageKey);
+
+        const key = elem.find('mark').text().replace(':', '').trim();
+        const value = elem.text().replace(elem.find('mark').text(), '').trim();
+
+        data[key] = value;
+      });
+
+      location.units.push({
+        locationName,
+        name,
+        url,
+        data,
+        imgs,
+      });
+    });
+
+    return location;
+  }));
+
+
+  console.log(locations);
 
   return 'a';
 }
 
 main();
 
-
-// axios.get(url)
-//   .then((response) => {
-//     const links = $('li.subregiones-flechita a', response.data);
-
-//     links.each((i, elem) => {
-//       const pagina = $(elem).attr('href');
-
-
-//       axios.get(url + pagina)
-//         .then((responsePagina) => {
-//           const links = $('.listado-todos .layout-33 ul li div', responsePagina.data);
-
-//           links.each((i, elem) => {
-//             const pagina = $(elem).attr('href');
-//           });
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//         });
-//     });
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
