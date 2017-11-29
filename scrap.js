@@ -5,6 +5,8 @@ const homeUrl = 'https://www.cabanias.com.ar';
 
 
 async function getData(url) {
+  console.log(url);
+
   let result = '';
 
   try {
@@ -20,65 +22,74 @@ async function getData(url) {
 
 async function main() {
   const homePage = await getData(homeUrl);
-  const links = $('li.subregiones-flechita a', homePage);
+  const cityLinks = $('li.subregiones-flechita a', homePage);
 
-  let locations = [];
-  links.each((i, link) => {
+  let cities = [];
+  cityLinks.each((i, link) => {
     // console.log($(link).html());
-    locations.push({
+    cities.push({
       name: $(link).text(),
       url: homeUrl + $(link).attr('href'),
-      units: [],
+      locations: [],
     });
   });
 
-  locations = await Promise.all(locations.map(async (location) => {
-    const cityPage = await getData(location.url);
+  cities = await Promise.all(cities.map(async (city) => {
+    const cityPage = await getData(city.url);
     const cityPageLocations = $('.listado-todos .layout-33 ul li div:not(.clearfix)', cityPage);
 
     cityPageLocations.each(async (j, cityPageLocation) => {
       const link = $(cityPageLocation).find('a.nombre-complejo-trigger');
       const name = link.text();
       const url = homeUrl + link.attr('href');
-      const locationName = $(cityPageLocation).find('span').text();
+      const cityName = $(cityPageLocation).find('span').text();
 
-      console.log(name);
-
-      const locationPage = await getData(url);
-      const locationPageImgs = $('a.foto-complejo', locationPage);
-      const locationPageData = $('.info-ficha div.layout-75 section', locationPage);
-
-      const imgs = [];
-      locationPageImgs.each((k, locationPageImg) => {
-        imgs.push(homeUrl + $(locationPageImg).attr('href'));
-      });
-
-      const data = {};
-      locationPageData.each((k, locationPageKey) => {
-        const elem = $(locationPageKey);
-
-        const key = elem.find('mark').text().replace(':', '').trim();
-        const value = elem.text().replace(elem.find('mark').text(), '').trim();
-
-        data[key] = value;
-      });
-
-      location.units.push({
-        locationName,
+      city.locations.push({
+        cityName,
         name,
         url,
-        data,
-        imgs,
+        data: {},
+        imgs: [],
       });
     });
 
-    return location;
+    return city;
   }));
 
+  let locations = cities.reduce((acc, city) => acc.concat(city.locations), []);
 
-  console.log(locations);
+  locations = await Promise.all(locations.map(async (location) => {
+    const locationPage = await getData(location.url);
+    const locationPageImgs = $('a.foto-complejo', locationPage);
+    const locationPageData = $('.info-ficha div.layout-75 section', locationPage);
 
-  return 'a';
+    const imgs = [];
+    locationPageImgs.each((k, locationPageImg) => {
+      imgs.push(homeUrl + $(locationPageImg).attr('href'));
+    });
+
+    const data = {};
+    locationPageData.each((k, locationPageKey) => {
+      const elem = $(locationPageKey);
+
+      const key = elem.find('mark').text().replace(':', '').trim();
+      const value = elem.text().replace(elem.find('mark').text(), '').trim();
+
+      data[key] = value;
+    });
+
+    const result = Object.assign(
+      {},
+      location, {
+        data,
+        imgs,
+      },
+    );
+
+    return result;
+  }));
+
+  return locations;
 }
 
 main();
