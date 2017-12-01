@@ -81,14 +81,17 @@ app.get('*', (req, res) => {
       <StaticRouter location={req.url} context={context}>
         {renderRoutes(routes)}
       </StaticRouter>
-                                   </Provider>);
+    </Provider>);
     if (context.status === 404) {
       res.status(404);
     }
     if (context.status === 302) {
       return res.redirect(302, context.url);
     }
-    res.render('index', { title: 'Express', data: store.getState(), content });
+
+    console.log(store.getState());
+
+    res.render('index', { title: 'Express', data: JSON.stringify(store.getState()), content });
   });
 });
 

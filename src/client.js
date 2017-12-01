@@ -17,8 +17,8 @@ import rootReducer from './reducers';
 
 const store = createStore(
   rootReducer,
-  // JSON.parse(window.__INITIAL_STATE__),
   window.__INITIAL_STATE__,
+  // wiwindow.__INITIAL_STATE__,
   compose(
     applyMiddleware(ReduxThunk, promiseMiddleware()),
     window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
