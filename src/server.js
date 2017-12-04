@@ -12,28 +12,28 @@ const app = express();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-if (!isProduction) {
-  // We require the bundler inside the if block because
-  // it is only needed in a development environment. Later
-  // you will see why this is a good idea
-  const bundler = require('../bundler.js');
-  bundler();
+// if (!isProduction) {
+//   // We require the bundler inside the if block because
+//   // it is only needed in a development environment. Later
+//   // you will see why this is a good idea
+//   const bundler = require('../bundler.js');
+//   bundler();
 
-  const httpProxy = require('http-proxy');
-  const proxy = httpProxy.createProxyServer();
+//   const httpProxy = require('http-proxy');
+//   const proxy = httpProxy.createProxyServer();
 
-  // Any requests to localhost:3000/build is proxied
-  // to webpack-dev-server
-  app.all('/build/*', (req, res) => {
-    proxy.web(req, res, {
-      target: 'http://localhost:4000',
-    });
-  });
+//   // Any requests to localhost:3000/build is proxied
+//   // to webpack-dev-server
+//   app.all('/build/*', (req, res) => {
+//     proxy.web(req, res, {
+//       target: 'http://localhost:4000',
+//     });
+//   });
 
-  proxy.on('error', (e) => {
-    console.log('Could not connect to proxy, please try again...', e);
-  });
-}
+//   proxy.on('error', (e) => {
+//     console.log('Could not connect to proxy, please try again...', e);
+//   });
+// }
 
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
@@ -45,7 +45,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -72,7 +72,7 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk, promiseMiddle
 app.get('*', (req, res) => {
   const branch = matchRoutes(routes, req.url);
   const promises = branch.map(({ route }) => {
-    const fetchData = route.component.fetchData;
+    const { fetchData } = route.component;
     return fetchData instanceof Function ? fetchData(store) : Promise.resolve(null);
   });
   return Promise.all(promises).then((data) => {
@@ -89,9 +89,12 @@ app.get('*', (req, res) => {
       return res.redirect(302, context.url);
     }
 
-    console.log(store.getState());
-
-    res.render('index', { title: 'Express', data: JSON.stringify(store.getState()), content });
+    res.render('index', {
+      title: 'Express',
+      data: JSON.stringify(store.getState()),
+      content,
+      isProduction: true,
+    });
   });
 });
 

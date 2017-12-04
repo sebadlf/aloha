@@ -1,16 +1,14 @@
-const fs = require('fs');
-
-const babelrc = fs.readFileSync('./.babelrc');
-let config;
-
-try {
-  config = JSON.parse(babelrc);
-} catch (err) {
-  console.error('==>     ERROR: Error parsing your .babelrc.');
-  console.error(err);
-}
-
-require('babel-register')(config);
+require('babel-register')({
+  presets: ['env', 'react'],
+  plugins: [
+    [
+      'babel-plugin-transform-require-ignore',
+      {
+        extensions: ['.css', '.scss'],
+      },
+    ],
+  ],
+});
 
 module.exports = require('./src/server');
 

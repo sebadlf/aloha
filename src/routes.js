@@ -1,15 +1,8 @@
 import React from 'react';
-import { renderRoutes } from 'react-router-config';
 
+import App from './containers/layout/app';
 import Home from './containers/home';
 import NotFound from './containers/notFound';
-
-const App = ({ route }) => (
-  <div>
-    <span>Alojarte Aqui!!</span>
-    {renderRoutes(route.routes)}
-  </div>
-);
 
 const DevTools = () => (
   <div>

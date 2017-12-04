@@ -3,7 +3,7 @@ const path = require('path');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = true; // process.env.NODE_ENV === 'production';
 
 process.traceDeprecation = true;
 
@@ -40,7 +40,7 @@ const prodPlugins = [
 ];
 
 const devPlugins = [
-  new webpack.HotModuleReplacementPlugin(),
+  // new webpack.HotModuleReplacementPlugin()
 ];
 
 const prodStylesScssConf = ExtractTextPlugin.extract({
@@ -55,16 +55,16 @@ const prodStylesCssConf = ExtractTextPlugin.extract({
   use: 'css-loader?url=false&sourceMap!postcss-loader?sourceMap',
 });
 
-const devStylesCssConf = 'style-loader!css?sourceMap!postcss-loader?sourceMap';
+const devStylesCssConf = 'style-loader!css-loader?sourceMap!postcss-loader?sourceMap';
 
-const hotReloadEndpoints = ['webpack/hot/only-dev-server', 'webpack-dev-server/client?http://localhost:4000'];
+// const hotReloadEndpoints = ['webpack/hot/only-dev-server', 'webpack-dev-server/client?http://localhost:4000'];
 
 const clientEntry = ['./src/client.js'];
 
 module.exports = {
   devtool: isProduction ? 'source-map' : 'eval-source-map',
   entry: {
-    client: isProduction ? clientEntry : hotReloadEndpoints.concat(clientEntry),
+    client: clientEntry, // isProduction ? clientEntry : hotReloadEndpoints.concat(clientEntry),
   },
   output: {
     path: path.join(__dirname, 'public/build/javascripts'),
@@ -74,7 +74,7 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /.js?$/,
+      test: /.jsx?$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
       options: {

@@ -2,7 +2,8 @@ const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('./webpack.config.js');
 
-module.exports = function () {
+// module.exports = function () {
+function build() {
   // First we fire up Webpack an pass in the configuration we
   // created
   let bundleStart = null;
@@ -44,4 +45,6 @@ module.exports = function () {
   bundler.listen(4000, 'localhost', () => {
     console.log('Bundling project, please wait...');
   });
-};
+}
+
+build();

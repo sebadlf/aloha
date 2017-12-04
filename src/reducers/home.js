@@ -6,11 +6,11 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_MENSAJE:
+    case actionTypes.SET_MESSAGE_FULFILLED:
       return Object.assign(
         {},
         state, {
-          size: action.payload,
+          message: action.payload,
         },
       );
     default:
