@@ -1,5 +1,8 @@
 const $ = require('cheerio');
 const axios = require('axios');
+const { mapLimit } = require('async');
+const fs = require('fs');
+const prettyjson = require('prettyjson');
 
 const homeUrl = 'https://www.cabanias.com.ar';
 
@@ -56,9 +59,10 @@ async function main() {
     return city;
   }));
 
-  let locations = cities.reduce((acc, city) => acc.concat(city.locations), []);
+  const locations = cities.reduce((acc, city) => acc.concat(city.locations), []);
 
-  locations = await Promise.all(locations.map(async (location) => {
+  // ...or ES2017 async functions
+  mapLimit(locations, 50, async (location) => {
     const locationPage = await getData(location.url);
     const locationPageImgs = $('a.foto-complejo', locationPage);
     const locationPageData = $('.info-ficha div.layout-75 section', locationPage);
@@ -78,16 +82,26 @@ async function main() {
       data[key] = value;
     });
 
-    const result = Object.assign(
-      {},
-      location, {
-        data,
-        imgs,
-      },
-    );
+    location.data = data;
+    location.imgs = imgs;
 
-    return result;
-  }));
+
+    // const result = Object.assign(
+    //   {},
+    //   location, {
+    //     data,
+    //     imgs,
+    //   },
+    // );
+
+    return location;
+  }, (err, results) => {
+    if (err) throw err;
+    // results is now an array of the response bodies
+    // console.log(results);
+
+    fs.writeFileSync('./locations.json', JSON.stringify(cities));
+  });
 
   return locations;
 }
