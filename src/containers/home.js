@@ -13,8 +13,9 @@ class TypeAhead extends React.Component {
     this.state = {
       selectedOption: '',
     };
-  }
 
+    this.handleChange = this.handleChange.bind(this);
+  }
 
   handleChange(selectedOption) {
     this.setState({ selectedOption });
