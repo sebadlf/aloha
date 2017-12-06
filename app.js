@@ -10,5 +10,7 @@ require('babel-register')({
   ],
 });
 
+require('./db');
+
 module.exports = require('./src/server');
 
