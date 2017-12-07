@@ -14,24 +14,47 @@ const sequelize = new Sequelize('aloha', 'aloha', 'Aloha123!', {
   operatorsAliases: false,
 });
 
-const User = sequelize.define('user', {
-  username: Sequelize.STRING,
-  birthday: Sequelize.DATE,
+const cabanaCity = sequelize.define('cabanaCity', {
+  name: Sequelize.STRING(255),
+  url: Sequelize.STRING(255),
 });
 
-const cabanas = sequelize.define('user', {
-  username: Sequelize.STRING,
-  birthday: Sequelize.DATE,
+const cabanaLocation = sequelize.define('cabanaLocation', {
+  cityName: Sequelize.STRING(255),
+  name: Sequelize.STRING(255),
+  url: Sequelize.STRING(255),
 });
 
-// sequelize.sync()
-//   .then(() => User.create({
-//     username: 'janedoe',
-//     birthday: new Date(1980, 6, 20),
-//   }))
-//   .then((jane) => {
-//     console.log(jane.toJSON());
-//   });
+const cabanaData = sequelize.define('cabanaData', {
+  temporada: Sequelize.STRING(255),
+  cantidad: Sequelize.STRING(255),
+  pax: Sequelize.STRING(255),
+  precios: Sequelize.STRING(255),
+});
 
-module.exports = sequelize;
+const cabanaImg = sequelize.define('cabanaImg', {
+  url: Sequelize.STRING(255),
+});
+
+cabanaCity.hasMany(cabanaLocation);
+cabanaLocation.belongsTo(cabanaCity);
+
+cabanaLocation.hasMany(cabanaData);
+cabanaData.belongsTo(cabanaLocation);
+
+cabanaLocation.hasMany(cabanaImg);
+cabanaImg.belongsTo(cabanaLocation);
+
+sequelize.sync()
+  .then(() => {
+    console.log('done');
+  });
+
+module.exports = {
+  db: sequelize,
+  cabanaCity,
+  cabanaLocation,
+  cabanaData,
+  cabanaImg,
+};
 
