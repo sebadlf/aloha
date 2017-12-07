@@ -15,17 +15,15 @@ const sequelize = new Sequelize('aloha', 'aloha', 'Aloha123!', {
 });
 
 const cabanaCity = sequelize.define('cabanaCity', {
-  name: Sequelize.STRING(255),
+  name: Sequelize.STRING(500),
   url: Sequelize.STRING(255),
 });
 
 const cabanaLocation = sequelize.define('cabanaLocation', {
   cityName: Sequelize.STRING(255),
-  name: Sequelize.STRING(255),
+  name: Sequelize.STRING(500),
   url: Sequelize.STRING(255),
-});
 
-const cabanaData = sequelize.define('cabanaData', {
   temporada: Sequelize.STRING(255),
   cantidad: Sequelize.STRING(255),
   pax: Sequelize.STRING(255),
@@ -39,22 +37,13 @@ const cabanaImg = sequelize.define('cabanaImg', {
 cabanaCity.hasMany(cabanaLocation);
 cabanaLocation.belongsTo(cabanaCity);
 
-cabanaLocation.hasMany(cabanaData);
-cabanaData.belongsTo(cabanaLocation);
-
 cabanaLocation.hasMany(cabanaImg);
 cabanaImg.belongsTo(cabanaLocation);
-
-sequelize.sync()
-  .then(() => {
-    console.log('done');
-  });
 
 module.exports = {
   db: sequelize,
   cabanaCity,
   cabanaLocation,
-  cabanaData,
   cabanaImg,
 };
 
