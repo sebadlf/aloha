@@ -2,13 +2,9 @@ import React from 'react';
 
 import App from './containers/layout/app';
 import Home from './containers/home';
+import Zone from './containers/zone/zone';
+import Location from './containers/location/location';
 import NotFound from './containers/notFound';
-
-const DevTools = () => (
-  <div>
-    <span>DevTools</span>
-  </div>
-);
 
 const routes = [
   {
@@ -20,8 +16,12 @@ const routes = [
         component: Home,
       },
       {
-        path: '/devtools',
-        component: DevTools,
+        path: '/zone/:id',
+        component: Zone,
+      },
+      {
+        path: '/location/:id',
+        component: Location,
       },
       {
         component: NotFound,

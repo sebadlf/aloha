@@ -3,7 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { setMessage } from '../actions/home';
+import { setMessage } from '../../actions/home';
 
 
 class TypeAhead extends React.Component {
