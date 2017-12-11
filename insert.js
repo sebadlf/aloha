@@ -1,11 +1,10 @@
 /* eslint-disable no-await-in-loop,  no-plusplus */
 const {
-  db, cabanaCity, cabanaLocation, cabanaImg,
+  db, cabanaCity, cabanaLocation, cabanaData, cabanaImg,
 } = require('./db');
 
 const fs = require('fs');
-const { eachLimit } = require('async');
-
+const slug = require('slug');
 
 async function insert() {
   const data = fs.readFileSync('./locations.json');
@@ -33,6 +32,19 @@ async function insert() {
         pax: location.data['Pax por cabaña'],
         precios: location.data.Precios,
       });
+
+      const keys = Object.keys(location.data);
+
+      for (let k = 0; k < keys.length; k++) {
+        const key = keys[k];
+
+        await cabanaData.create({
+          cabanaLocationId: cabanaLocationDb.id,
+          slug: key,
+          title: location.data[key].key,
+          text: location.data[key].value,
+        });
+      }
 
       for (let k = 0; k < location.imgs.length; k++) {
         const img = location.imgs[k];

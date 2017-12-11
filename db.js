@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('aloha', 'aloha', 'Aloha123!', {
-  host: '192.34.62.22',
+const sequelize = new Sequelize('aloha', 'aloha', 'Al0h@123', {
+  host: '165.227.73.154',
   dialect: 'mysql',
 
   pool: {
@@ -30,12 +30,21 @@ const cabanaLocation = sequelize.define('cabanaLocation', {
   precios: Sequelize.STRING(255),
 });
 
+const cabanaData = sequelize.define('cabanaData', {
+  slug: Sequelize.STRING(255),
+  title: Sequelize.STRING(255),
+  text: Sequelize.STRING(8000),
+});
+
 const cabanaImg = sequelize.define('cabanaImg', {
   url: Sequelize.STRING(255),
 });
 
 cabanaCity.hasMany(cabanaLocation);
 cabanaLocation.belongsTo(cabanaCity);
+
+cabanaLocation.hasMany(cabanaData);
+cabanaData.belongsTo(cabanaLocation);
 
 cabanaLocation.hasMany(cabanaImg);
 cabanaImg.belongsTo(cabanaLocation);
@@ -44,6 +53,7 @@ module.exports = {
   db: sequelize,
   cabanaCity,
   cabanaLocation,
+  cabanaData,
   cabanaImg,
 };
 
