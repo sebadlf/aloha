@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   message: 'Bienvenido!!!',
+  cities: [],
 };
 
 export default (state = initialState, action) => {
@@ -13,6 +14,16 @@ export default (state = initialState, action) => {
           message: action.payload,
         },
       );
+    case actionTypes.GETCITIES_FULFILLED:
+      return {
+        ...state,
+        cities: action.payload,
+      };
+    case actionTypes.GETCITIES_REJECTED:
+      return {
+        ...state,
+        cities: [],
+      };
     default:
       return state;
   }

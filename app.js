@@ -1,5 +1,5 @@
 require('babel-register')({
-  presets: ['env', 'react'],
+  presets: ['env', 'react', 'stage-0'],
   plugins: [
     [
       'babel-plugin-transform-require-ignore',

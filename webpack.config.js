@@ -59,7 +59,7 @@ const devStylesCssConf = 'style-loader!css-loader?sourceMap!postcss-loader?sourc
 
 // const hotReloadEndpoints = ['webpack/hot/only-dev-server', 'webpack-dev-server/client?http://localhost:4000'];
 
-const clientEntry = ['./src/client.js'];
+const clientEntry = ['babel-polyfill', './src/client.js'];
 
 module.exports = {
   devtool: isProduction ? 'source-map' : 'eval-source-map',
@@ -78,7 +78,7 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node_modules/,
       options: {
-        presets: ['env', 'react'],
+        presets: ['env', 'react', 'stage-0'],
       },
     }, {
       test: /\.scss$/,
