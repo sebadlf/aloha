@@ -1,3 +1,5 @@
+require('babel-polyfill');
+
 require('babel-register')({
   presets: ['env', 'react', 'stage-0'],
   plugins: [

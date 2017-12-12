@@ -1,41 +1,32 @@
 import React, { PureComponent } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Select from 'react-select';
+import { Async } from 'react-select';
+import axios from 'axios';
 
 import { setMessage } from '../../actions/home';
 
+// const getOptions = text => axios.get('/api')
+//   .then((response) => {
+//     return response.data
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
 
-class TypeAhead extends React.Component {
-  constructor(props) {
-    super(props);
+const getOptions = (input, callback) => {
+  axios.get('/api')
+    .then((response) => {
+      const data = response.data.map(elem => ({ value: elem.id, label: elem.name }));
 
-    this.state = {
-      selectedOption: '',
-    };
+      console.log(data);
 
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(selectedOption) {
-    this.setState({ selectedOption });
-    console.log(`Selected: ${selectedOption.label}`);
-  }
-
-  render() {
-    return (
-      <Select
-        name="form-field-name"
-        value={this.state.value}
-        onChange={this.handleChange}
-        options={[
-          { value: 'one', label: 'One' },
-          { value: 'two', label: 'Two' },
-        ]}
-      />
-    );
-  }
-}
+      callback(null, { options: data });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
 class Home extends PureComponent {
   static fetchData(store) {
@@ -49,7 +40,12 @@ class Home extends PureComponent {
         <Row>
           <Col sm={12}>
             <h1>Alójate Aquí</h1>
-            <TypeAhead />
+            <Async
+              name="form-field-name"
+              value="two"
+              loadOptions={getOptions}
+            />
+
           </Col>
         </Row>
       </Grid>

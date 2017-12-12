@@ -1,16 +1,34 @@
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+// Server Side
+import express from 'express';
+import path from 'path';
+import favicon from 'serve-favicon';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 
-// const index = require('./routes/index');
-// const users = require('./routes/users');
+// Client Side
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+
+import StaticRouter from 'react-router-dom/StaticRouter';
+import { matchRoutes, renderRoutes } from 'react-router-config';
+import ReduxThunk from 'redux-thunk';
+import promiseMiddleware from 'redux-promise-middleware';
+
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+
+import rootReducer from './reducers';
+
+import routes from './routes';
+
+// Relative imports
+
+import api from './api';
 
 const app = express();
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = true;// process.env.NODE_ENV === 'production';
 
 // if (!isProduction) {
 //   // We require the bundler inside the if block because
@@ -47,25 +65,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-
-import StaticRouter from 'react-router-dom/StaticRouter';
-import { matchRoutes, renderRoutes } from 'react-router-config';
-import ReduxThunk from 'redux-thunk';
-import promiseMiddleware from 'redux-promise-middleware';
-
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-
-import rootReducer from './reducers';
-
-
-import routes from './routes';
-
-/*eslint-disable*/
-//const router = express.Router();
-/* eslint-enable */
+app.use('/api', api);
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk, promiseMiddleware()));
 
@@ -81,7 +81,7 @@ app.get('*', (req, res) => {
       <StaticRouter location={req.url} context={context}>
         {renderRoutes(routes)}
       </StaticRouter>
-    </Provider>);
+                                   </Provider>);
     if (context.status === 404) {
       res.status(404);
     }
@@ -93,7 +93,7 @@ app.get('*', (req, res) => {
       title: 'Express',
       data: JSON.stringify(store.getState()),
       content,
-      isProduction: true,
+      isProduction,
     });
   });
 });
