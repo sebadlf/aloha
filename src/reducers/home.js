@@ -1,25 +1,23 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  message: 'Bienvenido!!!',
+  searchInputValue: '',
   cities: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_MESSAGE_FULFILLED:
-      return Object.assign(
-        {},
-        state, {
-          message: action.payload,
-        },
-      );
-    case actionTypes.GETCITIES_FULFILLED:
+    case actionTypes.HOME_SEARCH_INPUT_CHANGE:
+      return {
+        ...state,
+        searchInputValue: action.payload,
+      };
+    case actionTypes.HOME_GET_CITIES_FULFILLED:
       return {
         ...state,
         cities: action.payload,
       };
-    case actionTypes.GETCITIES_REJECTED:
+    case actionTypes.HOME_GET_CITIES_REJECTED:
       return {
         ...state,
         cities: [],

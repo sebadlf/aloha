@@ -10,7 +10,7 @@ const getAll = async () => cabanaCity.findAll({
 });
 
 /* GET users listing. */
-router.get('/', async (req, res, next) => {
+router.get('/cities', async (req, res, next) => {
   const cities = await getAll();
 
   res.send(cities);

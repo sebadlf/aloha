@@ -2,18 +2,17 @@ import * as actionTypes from './actionTypes';
 
 import { getAll } from '../services/city';
 
-const messagePromise = () => new Promise((resolve, reject) => {
-  setTimeout(() => resolve('Mensaje 1'), 100);
-});
-
-export const setMessage = message => dispatch => dispatch({
-  type: actionTypes.SET_MESSAGE,
-  payload: messagePromise(),
-});
-
-
 export const getCities = () => dispatch => dispatch({
-  type: actionTypes.GETCITIES,
+  type: actionTypes.HOME_GET_CITIES,
   payload: getAll(),
 });
+
+export const searchInputChange = value => (dispatch) => {
+  dispatch({
+    type: actionTypes.HOME_SEARCH_INPUT_CHANGE,
+    payload: value,
+  });
+
+  return dispatch(getCities());
+};
 

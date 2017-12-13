@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { setMessage } from '../../actions/home';
 
 class Location extends PureComponent {
-  static fetchData(store) {
-    return store.dispatch(setMessage());
-  }
+  // static fetchData(store) {
+  //   return store.dispatch(setMessage());
+  // }
 
   render() {
     return (

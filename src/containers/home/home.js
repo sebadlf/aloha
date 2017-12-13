@@ -1,49 +1,30 @@
 import React, { PureComponent } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { Async } from 'react-select';
-import axios from 'axios';
+import Select from 'react-select';
 
-import { setMessage } from '../../actions/home';
-
-// const getOptions = text => axios.get('/api')
-//   .then((response) => {
-//     return response.data
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
-
-const getOptions = (input, callback) => {
-  axios.get('/api')
-    .then((response) => {
-      const data = response.data.map(elem => ({ value: elem.id, label: elem.name }));
-
-      console.log(data);
-
-      callback(null, { options: data });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+import { searchInputChange } from '../../actions/home';
 
 class Home extends PureComponent {
-  static fetchData(store) {
-    return store.dispatch(setMessage());
-  }
+  // static fetchData(store) {
+  //   return store.dispatch(searchInputChange(''));
+  // }
 
   render() {
-    const { message } = this.props;
+    const {
+      searchInputValue, cities, loading, searchInputChange,
+    } = this.props;
     return (
       <Grid componentClass="footer">
         <Row>
           <Col sm={12}>
             <h1>Alójate Aquí</h1>
-            <Async
+            <Select
               name="form-field-name"
-              value="two"
-              loadOptions={getOptions}
+              value={searchInputValue}
+              options={cities}
+              loading={loading}
+              onInputChange={searchInputChange}
             />
 
           </Col>
@@ -54,11 +35,16 @@ class Home extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  message: state.home.message,
+  searchInputValue: state.home.searchInputValue,
+  cities: state.home.cities,
+  loading: state.home.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setMessage: () => dispatch(setMessage()),
+  searchInputChange: (value) => {
+    console.log(value);
+    dispatch(searchInputChange(value));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
