@@ -19,13 +19,13 @@
 <body>
   <div id="root">{{{content}}}</div>
     
-  {{#if isProduction}} 
+  {{!-- {{#if isProduction}} 
     <script src='/build/javascripts/commons.js'></script>
-  {{/if}}
+  {{/if}} --}}
   <script src='/build/javascripts/client.js'></script>
     
   {{#if isProduction}}  
-    <link rel="stylesheet" href="/build/stylesheets/client-build.css"></link>
+    <link rel="stylesheet" href="/build/stylesheets/client.css"></link>
   {{/if}}
 </body>
 </html>

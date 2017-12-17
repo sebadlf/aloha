@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -12,7 +13,7 @@ class Home extends PureComponent {
 
   render() {
     const {
-      searchInputValue, cities, loading, searchInputChange,
+      searchInputValue, cities, loading, inputChange,
     } = this.props;
     return (
       <Grid componentClass="footer">
@@ -23,8 +24,8 @@ class Home extends PureComponent {
               name="form-field-name"
               value={searchInputValue}
               options={cities}
-              loading={loading}
-              onInputChange={searchInputChange}
+              isLoading={loading}
+              onInputChange={inputChange}
             />
 
           </Col>
@@ -34,6 +35,18 @@ class Home extends PureComponent {
   }
 }
 
+const cityAutocompleShape = PropTypes.shape({
+  value: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+});
+
+Home.propTypes = {
+  searchInputValue: PropTypes.string.isRequired,
+  cities: PropTypes.arrayOf(cityAutocompleShape).isRequired,
+  loading: PropTypes.bool.isRequired,
+  inputChange: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = state => ({
   searchInputValue: state.home.searchInputValue,
   cities: state.home.cities,
@@ -41,10 +54,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  searchInputChange: (value) => {
-    console.log(value);
-    dispatch(searchInputChange(value));
-  },
+  inputChange: value => dispatch(searchInputChange(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
