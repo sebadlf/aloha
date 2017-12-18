@@ -7,3 +7,10 @@ export const getAll = input =>
       console.log(error);
     });
 
+
+export const getCity = slug =>
+  axios.get(`http://localhost:3000/api/city/${slug}`)
+    .then(response => response.data[0])
+    .catch((error) => {
+      console.log(error);
+    });

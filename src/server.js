@@ -71,9 +71,10 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk, promiseMiddle
 
 app.get('*', (req, res) => {
   const branch = matchRoutes(routes, req.url);
-  const promises = branch.map(({ route }) => {
+
+  const promises = branch.map(({ route, match }) => {
     const { fetchData } = route.component;
-    return fetchData instanceof Function ? fetchData(store) : Promise.resolve(null);
+    return fetchData instanceof Function ? fetchData(store, match.params) : Promise.resolve(null);
   });
   return Promise.all(promises).then((data) => {
     const context = {};
@@ -81,7 +82,7 @@ app.get('*', (req, res) => {
       <StaticRouter location={req.url} context={context}>
         {renderRoutes(routes)}
       </StaticRouter>
-                                   </Provider>);
+    </Provider>);
     if (context.status === 404) {
       res.status(404);
     }
