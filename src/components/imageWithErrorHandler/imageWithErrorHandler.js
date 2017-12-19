@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 
-require('./ImageWithErrorHandler.scss');
+require('./imageWithErrorHandler.scss');
 
 class ImageWithOrientation extends Component {
   constructor() {
