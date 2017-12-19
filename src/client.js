@@ -12,8 +12,10 @@ import routes from './routes';
 
 import rootReducer from './reducers';
 
-// import {setSize} from './actions/admin'
 // require('./service/interceptor')
+
+import { setSize } from './actions/app';
+
 
 const store = createStore(
   rootReducer,
@@ -24,6 +26,11 @@ const store = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
   ),
 );
+
+console.log('run');
+
+window.addEventListener('load', () => store.dispatch(setSize()));
+window.addEventListener('resize', () => store.dispatch(setSize()));
 
 // window.addEventListener('load', () => store.dispatch(setSize()))
 // window.addEventListener('resize', () => store.dispatch(setSize()))

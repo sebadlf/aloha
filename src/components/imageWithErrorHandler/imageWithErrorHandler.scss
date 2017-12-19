@@ -1,0 +1,20 @@
+.ImageWithOrientation {
+    display: block;
+    //max-width: 100%;
+    //max-height: 100%;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+
+    &-Horizontal {
+        width: auto;
+        height: 100%;
+    }
+
+    &-Vertical {
+        width: 100%;
+        height: auto;
+
+    }
+}

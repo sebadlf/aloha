@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const { cabanaCity, cabanaLocation } = require('../db');
+const { cabanaCity, cabanaLocation, cabanaImg } = require('../db');
 
 const getAll = async () => cabanaCity.findAll({
 //   where: {
@@ -15,6 +15,7 @@ const getCity = async cityId => cabanaCity.findAll({
   },
   include: [{
     model: cabanaLocation,
+    include: [cabanaImg],
   }],
 });
 
@@ -27,7 +28,7 @@ router.get('/cities', async (req, res, next) => {
 
 /* GET city. */
 router.get('/city/:id', async (req, res, next) => {
-  const city = await getCity(req.param('id'));
+  const city = await getCity(req.params.id);
 
   res.send(city);
 });
