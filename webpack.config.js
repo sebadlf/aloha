@@ -39,6 +39,9 @@ const prodPlugins = [
   new ExtractTextPlugin('../stylesheets/[name].css'),
 ];
 
+//  'transform-object-rest-spread',
+
+
 const devPlugins = [
   // new webpack.HotModuleReplacementPlugin()
   new ExtractTextPlugin('../stylesheets/[name].css'),
