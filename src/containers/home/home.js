@@ -3,7 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { searchInputChange } from '../../actions/home';
+import { searchInputChange, valueChange } from '../../actions/home';
 
 class Home extends PureComponent {
   // static fetchData(store) {
@@ -12,7 +12,7 @@ class Home extends PureComponent {
 
   render() {
     const {
-      searchInputValue, cities, loading, searchInputChange,
+      value, inputValue, options, loading, onInputChange, onChange,
     } = this.props;
     return (
       <Grid componentClass="footer">
@@ -21,10 +21,11 @@ class Home extends PureComponent {
             <h1>Alójate Aquí</h1>
             <Select
               name="form-field-name"
-              value={searchInputValue}
-              options={cities}
+              value={value}
+              options={options}
               loading={loading}
-              onInputChange={searchInputChange}
+              onInputChange={onInputChange}
+              onChange={onChange}
             />
 
           </Col>
@@ -35,16 +36,15 @@ class Home extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  searchInputValue: state.home.searchInputValue,
-  cities: state.home.cities,
+  inputValue: state.home.searchInputValue,
+  value: state.home.searchValue,
+  options: state.home.cities,
   loading: state.home.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
-  searchInputChange: (value) => {
-    console.log(value);
-    dispatch(searchInputChange(value));
-  },
+  onInputChange: value => dispatch(searchInputChange(value)),
+  onChange: value => dispatch(valueChange(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

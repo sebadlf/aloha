@@ -16,3 +16,9 @@ export const searchInputChange = value => (dispatch) => {
   return dispatch(getCities());
 };
 
+export const valueChange = value => (dispatch) => {
+  dispatch({
+    type: actionTypes.HOME_VALUE_CHANGE,
+    payload: value,
+  });
+};
