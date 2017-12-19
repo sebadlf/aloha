@@ -2,9 +2,9 @@ import * as actionTypes from './actionTypes';
 
 import { getAll } from '../services/city';
 
-export const getCities = () => dispatch => dispatch({
+export const getCities = value => dispatch => dispatch({
   type: actionTypes.HOME_GET_CITIES,
-  payload: getAll(),
+  payload: getAll(value),
 });
 
 export const searchInputChange = value => (dispatch) => {
@@ -13,7 +13,9 @@ export const searchInputChange = value => (dispatch) => {
     payload: value,
   });
 
-  return dispatch(getCities());
+  if (value && value.length && value.length >= 3) {
+    dispatch(getCities(value));
+  }
 };
 
 export const valueChange = value => (dispatch) => {

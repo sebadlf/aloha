@@ -3,7 +3,7 @@ const path = require('path');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const isProduction = true; // process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 
 process.traceDeprecation = true;
 
@@ -36,11 +36,15 @@ const prodPlugins = [
     filename: 'commons.js',
     name: 'commons',
   }),
-  new ExtractTextPlugin('../stylesheets/[name]-build.css'),
+  new ExtractTextPlugin('../stylesheets/[name].css'),
 ];
+
+//  'transform-object-rest-spread',
+
 
 const devPlugins = [
   // new webpack.HotModuleReplacementPlugin()
+  new ExtractTextPlugin('../stylesheets/[name].css'),
 ];
 
 const prodStylesScssConf = ExtractTextPlugin.extract({
@@ -82,10 +86,10 @@ module.exports = {
       },
     }, {
       test: /\.scss$/,
-      loader: isProduction ? prodStylesScssConf : devStylesScssConf,
+      loader: isProduction ? prodStylesScssConf : prodStylesScssConf, // devStylesScssConf,
     }, {
       test: /\.css$/,
-      loader: isProduction ? prodStylesCssConf : devStylesCssConf,
+      loader: isProduction ? prodStylesCssConf : prodStylesCssConf, // devStylesCssConf,
     }],
   },
   plugins: isProduction ? prodPlugins : devPlugins,

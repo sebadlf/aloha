@@ -5,7 +5,7 @@
   "scripts": {
     "nodemon": "nodemon ./bin/www",
     "start": "concurrently \"nodemon ./bin/www\" \"webpack --watch\"",
-    "deploy": "pm2 stop all && git pull origin master && npm install && export NODE_ENV=production && webpack -p && pm2 start bin/www && pm2 start import.js",
+    "deploy": "pm2 stop all && git pull origin master && npm install && export PORT=80 &&  export NODE_ENV=production && webpack -p && pm2 start bin/www",
     "seba": "export NODE_ENV=production && webpack -p",
     "develop": "export PORT=8000 && npm install && nodemon ./bin/www"
   },
@@ -16,11 +16,13 @@
     "babel-register": "^6.26.0",
     "body-parser": "~1.18.2",
     "cheerio": "^1.0.0-rc.2",
+    "classnames": "^2.2.5",
     "concurrently": "^3.5.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "hbs": "~4.0.1",
+    "lodash": "^4.17.4",
     "morgan": "~1.9.0",
     "mysql2": "^1.5.1",
     "nodemon": "^1.12.1",

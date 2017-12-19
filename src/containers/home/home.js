@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -22,6 +23,7 @@ class Home extends PureComponent {
             <Select
               name="form-field-name"
               value={value}
+              inputValue={inputValue}
               options={options}
               loading={loading}
               onInputChange={onInputChange}
@@ -34,6 +36,20 @@ class Home extends PureComponent {
     );
   }
 }
+
+const cityAutocompleShape = PropTypes.shape({
+  value: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+});
+
+Home.propTypes = {
+  value: PropTypes.instanceOf(cityAutocompleShape).isRequired,
+  inputValue: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(cityAutocompleShape).isRequired,
+  loading: PropTypes.bool.isRequired,
+  onInputChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({
   inputValue: state.home.searchInputValue,
