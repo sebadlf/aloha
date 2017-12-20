@@ -27,10 +27,8 @@ const store = createStore(
   ),
 );
 
-console.log('run');
-
-window.addEventListener('load', () => store.dispatch(setSize()));
-window.addEventListener('resize', () => store.dispatch(setSize()));
+// window.addEventListener('load', () => store.dispatch(setSize()));
+// window.addEventListener('resize', () => store.dispatch(setSize()));
 
 // window.addEventListener('load', () => store.dispatch(setSize()))
 // window.addEventListener('resize', () => store.dispatch(setSize()))

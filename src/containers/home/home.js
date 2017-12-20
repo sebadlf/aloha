@@ -43,7 +43,7 @@ const cityAutocompleShape = PropTypes.shape({
 });
 
 Home.propTypes = {
-  value: PropTypes.instanceOf(cityAutocompleShape).isRequired,
+  value: PropTypes.instanceOf(cityAutocompleShape),
   inputValue: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(cityAutocompleShape).isRequired,
   loading: PropTypes.bool.isRequired,

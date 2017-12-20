@@ -69,6 +69,10 @@ app.use('/api', api);
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk, promiseMiddleware()));
 
+app.get('/', (req, res) => {
+  res.render('coming');
+});
+
 app.get('*', (req, res) => {
   const branch = matchRoutes(routes, req.url);
 
@@ -82,7 +86,7 @@ app.get('*', (req, res) => {
       <StaticRouter location={req.url} context={context}>
         {renderRoutes(routes)}
       </StaticRouter>
-    </Provider>);
+                                   </Provider>);
     if (context.status === 404) {
       res.status(404);
     }

@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   searchInputValue: '',
-  searchValue
+  searchValue: null,
   cities: [],
   loading: false,
 };
@@ -14,6 +14,11 @@ export default (state = initialState, action) => {
         ...state,
         searchInputValue: action.payload,
         cities: action.payload.length >= 3 ? state.cities : [],
+      };
+    case actionTypes.HOME_VALUE_CHANGE:
+      return {
+        ...state,
+        searchValue: action.payload,
       };
     case actionTypes.HOME_GET_CITIES_PENDING:
       return {
