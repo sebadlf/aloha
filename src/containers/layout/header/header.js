@@ -13,8 +13,8 @@ const Header = () => (
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
-          <LinkContainer to="/admin/events">
-            <NavItem eventKey={2}>Events</NavItem>
+          <LinkContainer to="/zone/1">
+            <NavItem eventKey={2}>Zone 1</NavItem>
           </LinkContainer>
           <LinkContainer to="/admin/help">
             <NavItem eventKey={3}>Help</NavItem>

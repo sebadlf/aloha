@@ -13,7 +13,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         searchInputValue: action.payload,
-        cities: action.payload.length >= 3 ? state.cities : [],
       };
     case actionTypes.HOME_VALUE_CHANGE:
       return {

@@ -16,6 +16,10 @@ const routes = [
         component: Home,
       },
       {
+        path: '/home',
+        component: Home,
+      },
+      {
         path: '/zone/:slug',
         component: Zone,
       },
