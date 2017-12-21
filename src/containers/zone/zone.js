@@ -35,7 +35,7 @@ class Zone extends PureComponent {
     const { slug } = this.props.match.params;
     const { city, getZone } = this.props;
 
-    if (!city || !city.id !== slug) {
+    if (!city || Number(location.id) !== Number(slug)) {
       getZone(slug);
     }
   }
