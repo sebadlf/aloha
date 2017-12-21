@@ -28,7 +28,7 @@ import api from './api';
 
 const app = express();
 
-const isProduction = true;// process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 
 // if (!isProduction) {
 //   // We require the bundler inside the if block because
@@ -78,15 +78,17 @@ app.get('*', (req, res) => {
 
   const promises = branch.map(({ route, match }) => {
     const { fetchData } = route.component;
-    return fetchData instanceof Function ? fetchData(store, match.params) : Promise.resolve(null);
+    return fetchData instanceof Function ? fetchData(store, match.params) : Promise.resolve({ notApply: 1 });
   });
+
   return Promise.all(promises).then((data) => {
     const context = {};
     const content = renderToString(<Provider store={store}>
       <StaticRouter location={req.url} context={context}>
         {renderRoutes(routes)}
       </StaticRouter>
-                                   </Provider>);
+    </Provider>);
+
     if (context.status === 404) {
       res.status(404);
     }

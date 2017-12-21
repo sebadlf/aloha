@@ -36,18 +36,21 @@ class Location extends PureComponent {
   }
 
   componentDidMount() {
-    const { slug } = this.props.match.params;
-    const { location, getLocation } = this.props;
+    // const { slug } = this.props.match.params;
+    // const { location, getLocation } = this.props;
 
-    if (!location || Number(location.id) !== Number(slug)) {
-      getLocation(slug);
-    }
+    // if (!location || Number(location.id) !== Number(slug)) {
+    //   getLocation(slug);
+    // }
   }
 
   render() {
-    const { location } = this.props;
+    const { location, staticContext } = this.props;
+
+    console.log(this.props);
 
     if (!location || !location.id) {
+      staticContext.status = 404;
       return null;
     }
 
