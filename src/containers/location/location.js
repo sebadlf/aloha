@@ -26,6 +26,15 @@ class Location extends PureComponent {
     );
   }
 
+  static renderData(data, index) {
+    return (
+      <p key={index}>
+        <strong>{data.title}: </strong>
+        {data.text}
+      </p>
+    );
+  }
+
   componentDidMount() {
     const { slug } = this.props.match.params;
     const { location, getLocation } = this.props;
@@ -50,7 +59,11 @@ class Location extends PureComponent {
           <Col sm={12}>
             <h1>{name}</h1>
           </Col>
-          {location.cabanaImgs.map((img, index) => Location.renderImg(img, index))}
+          <hr />
+          <Col xs={12}>
+            {location.cabanaImgs.map((img, index) => Location.renderImg(img, index))}
+            {location.cabanaData.map((data, index) => Location.renderData(data, index))}
+          </Col>
         </Row>
       </Grid>
     );
