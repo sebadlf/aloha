@@ -21,13 +21,14 @@ const cabanaCity = sequelize.define('cabanaCity', {
 
 const cabanaLocation = sequelize.define('cabanaLocation', {
   cityName: Sequelize.STRING(255),
+
+  region: Sequelize.STRING(500),
+  regionSlug: Sequelize.STRING(500),
+  localidad: Sequelize.STRING(500),
+  localidadSlug: Sequelize.STRING(500),
+
   name: Sequelize.STRING(500),
   url: Sequelize.STRING(255),
-
-  temporada: Sequelize.STRING(255),
-  cantidad: Sequelize.STRING(255),
-  pax: Sequelize.STRING(255),
-  precios: Sequelize.STRING(255),
 });
 
 const cabanaData = sequelize.define('cabanaData', {
