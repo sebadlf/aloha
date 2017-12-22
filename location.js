@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const url = 'https://www.cabanias.com.ar/villa-gesell/cabanas/caobaypiedra';
+const url = 'http://www.anatolia.com.ar/';
 
 async function getData(url) {
   // console.log(url);
@@ -22,16 +22,13 @@ async function getData(url) {
 async function test() {
   const data = await getData(url);
 
-  const pattern = /gps:"[^"]+/;
+  console.log(data);
+
+  const pattern = /[A-Za-z0-9._-]+@[A-Za-z0-9._-]+\.[A-Za-z.]{2,3}/;
 
   const result = pattern.exec(data)[0];
 
-  const clean = result.replace('gps:"', '');
-
-  const [lat, long] = clean.split(',');
-
-  console.log(lat);
-  console.log(long);
+  console.log(result);
 }
 
 test();

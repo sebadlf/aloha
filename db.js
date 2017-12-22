@@ -15,6 +15,7 @@ const sequelize = new Sequelize('aloha', 'aloha', 'Al0h@123', {
 });
 
 const cabanaCity = sequelize.define('cabanaCity', {
+  group: Sequelize.STRING(255),
   name: Sequelize.STRING(500),
   url: Sequelize.STRING(255),
 });

@@ -31,12 +31,18 @@ async function getMail(urlOriginal) {
 
   const urls = [
     urlOriginal,
-    `${urlOriginal}/contancto`,
-    `${urlOriginal}/contancto.html`,
-    `${urlOriginal}/contancto.php`,
-    `${urlOriginal}/contanctenos`,
-    `${urlOriginal}/contanctenos.html`,
-    `${urlOriginal}/contanctenos.php`,
+    `${urlOriginal}/contacto`,
+    `${urlOriginal}/contacto.html`,
+    `${urlOriginal}/contacto.php`,
+    `${urlOriginal}/contact`,
+    `${urlOriginal}/contact.html`,
+    `${urlOriginal}/contact.php`,
+    `${urlOriginal}/consultas`,
+    `${urlOriginal}/consultas.html`,
+    `${urlOriginal}/consultas.php`,
+    `${urlOriginal}/contactenos`,
+    `${urlOriginal}/contactenos.html`,
+    `${urlOriginal}/contactenos.php`,
     `${urlOriginal}/reservas`,
     `${urlOriginal}/reservas.html`,
     `${urlOriginal}/reservas.php`,
@@ -71,7 +77,7 @@ async function main() {
     // console.log($(link).html());
     cities.push({
       name: $(link).text(),
-      url: homeUrl + $(link).attr('href'),
+      url: `${homeUrl}/${$(link).attr('href')}`,
       locations: [],
     });
   });
@@ -87,6 +93,7 @@ async function main() {
       const cityName = $(cityPageLocation).find('span').text();
 
       city.locations.push({
+        // region,
         cityName,
         name,
         url,
@@ -100,20 +107,28 @@ async function main() {
 
   const locations = cities.reduce((acc, city) => acc.concat(city.locations), []);
 
-  // for (let i = 0; i < locations.length; i++) {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < locations.length; i++) {
+  // for (let i = 0; i < 5; i++) {
     const location = locations[i];
 
     console.log(location.url);
 
     const locationPage = await getData(location.url);
 
+    const region = $('.nombre-region', locationPage);
+
+    console.log(region.text().trim());
+
+    const localidad = $('.FichaAsideLocalidades a', locationPage);
+
+    console.log(localidad.text().trim());
+
     const locationPageImgs = $('a.foto-complejo', locationPage);
     const locationPageData = $('.info-ficha section', locationPage);
 
     const imgs = [];
     locationPageImgs.each((k, locationPageImg) => {
-      imgs.push(homeUrl + $(locationPageImg).attr('href'));
+      imgs.push(`${homeUrl}/${$(locationPageImg).attr('href')}`);
     });
 
     const data = {};
@@ -133,18 +148,27 @@ async function main() {
 
     if (data['mas-info']) {
       const url = `http://${data['mas-info'].value}`;
+
+      console.log('web: ', url);
+
       const pagina = await getData(url);
 
       if (!pagina.error) {
         const mail = await getMail(url);
 
-        console.log(mail);
+        console.log('mail: ', mail);
 
         if (mail) {
-          data.mail = mail;
+          data.mail = {
+            key: 'mail',
+            value: mail,
+          };
         }
       } else {
-        data.paginaStatus = pagina.error;
+        data['pagina-status'] = {
+          key: 'pagina-status',
+          value: pagina.error,
+        };
         console.log(pagina.error);
       }
     }
@@ -160,8 +184,14 @@ async function main() {
 
       const [lat, long] = clean.split(',');
 
-      data.latitud = lat.trim();
-      data.longitud = long.trim();
+      data.latitud = {
+        key: 'latitud',
+        value: lat.trim(),
+      };
+      data.longitud = {
+        key: 'longitud',
+        value: long.trim(),
+      };
     }
     /** ************** */
 
@@ -172,7 +202,10 @@ async function main() {
     const resultMapa = patternMapa.exec(locationPage);
 
     if (resultMapa && resultMapa.length) {
-      data.mapa = resultMapa[0];
+      data.mapa = {
+        key: 'mapa',
+        value: resultMapa[0],
+      };
     }
     /** ************** */
 
