@@ -115,13 +115,11 @@ async function main() {
 
     const locationPage = await getData(location.url);
 
-    const region = $('.nombre-region', locationPage);
+    const region = $('.nombre-region', locationPage).text().trim();
+    const localidad = $('.FichaAsideLocalidades a', locationPage).text().trim();
 
-    console.log(region.text().trim());
-
-    const localidad = $('.FichaAsideLocalidades a', locationPage);
-
-    console.log(localidad.text().trim());
+    location.region = region;
+    location.localidad = localidad;
 
     const locationPageImgs = $('a.foto-complejo', locationPage);
     const locationPageData = $('.info-ficha section', locationPage);
@@ -146,7 +144,7 @@ async function main() {
       // console.log(slug(key));
     });
 
-    if (data['mas-info']) {
+    if (false && data['mas-info']) {
       const url = `http://${data['mas-info'].value}`;
 
       console.log('web: ', url);

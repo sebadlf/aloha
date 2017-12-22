@@ -24,6 +24,10 @@ async function insert() {
       const cabanaLocationDb = await cabanaLocation.create({
         cabanaCityId: cabanaCityDb.id,
         cityName: location.cityName,
+        region: location.region,
+        regionSlug: slug(location.region).toLocaleLowerCase(),
+        localidad: location.localidad,
+        localidadSlug: slug(location.localidad).toLocaleLowerCase(),
         name: location.name,
         url: location.url,
 
