@@ -30,12 +30,27 @@ const cabanaLocation = sequelize.define('cabanaLocation', {
 
   name: Sequelize.STRING(500),
   url: Sequelize.STRING(255),
-});
 
-const cabanaData = sequelize.define('cabanaData', {
-  slug: Sequelize.STRING(255),
-  title: Sequelize.STRING(255),
-  text: Sequelize.STRING(8000),
+  temporada: Sequelize.STRING(255),
+  'cantidad-de-cabanas': Sequelize.STRING(500),
+  'pax-por-cabana': Sequelize.STRING(255),
+  precios: Sequelize.STRING(2000),
+  servicios: Sequelize.STRING(6000),
+  'recreacion-en-la-zona': Sequelize.STRING(2000),
+  direccion: Sequelize.STRING(1000),
+  'distancia-aproximada-a-buenos-aires': Sequelize.STRING(50),
+  telefono: Sequelize.STRING(500),
+  'mas-info': Sequelize.STRING(255),
+  mapa: Sequelize.STRING(255),
+  'coordenadas-gps': Sequelize.STRING(255),
+  latitud: Sequelize.STRING(20),
+  longitud: Sequelize.STRING(20),
+  promo: Sequelize.STRING(2000),
+  facebook: Sequelize.STRING(255),
+  'cantidad-de-habitaciones': Sequelize.STRING(50),
+  'pax-por-habitacion': Sequelize.STRING(50),
+  twitter: Sequelize.STRING(50),
+  instagram: Sequelize.STRING(50),
 });
 
 const cabanaImg = sequelize.define('cabanaImg', {
@@ -45,9 +60,6 @@ const cabanaImg = sequelize.define('cabanaImg', {
 cabanaCity.hasMany(cabanaLocation);
 cabanaLocation.belongsTo(cabanaCity);
 
-cabanaLocation.hasMany(cabanaData);
-cabanaData.belongsTo(cabanaLocation);
-
 cabanaLocation.hasMany(cabanaImg);
 cabanaImg.belongsTo(cabanaLocation);
 
@@ -55,7 +67,6 @@ module.exports = {
   db: sequelize,
   cabanaCity,
   cabanaLocation,
-  cabanaData,
   cabanaImg,
 };
 

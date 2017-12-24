@@ -2,7 +2,7 @@
 const fs = require('fs');
 
 async function insert() {
-  const allKeys = [];
+  const allKeys = {};
 
   const data = fs.readFileSync('./locations.json');
   const json = JSON.parse(data);
@@ -18,12 +18,11 @@ async function insert() {
       for (let k = 0; k < keys.length; k++) {
         const key = keys[k];
 
-        if (!allKeys.includes(key)) {
-          allKeys.push(key);
-        }
 
-        if (key === '') {
-          console.log(location.data[key]);
+        if (!allKeys[key]) {
+          allKeys[key] = location.data[key].value.length;
+        } else if (allKeys[key].length < location.data[key].value.length) {
+          allKeys[key] = location.data[key].value.length;
         }
       }
     }
